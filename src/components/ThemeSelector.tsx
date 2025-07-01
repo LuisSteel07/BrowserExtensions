@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react"
 
 const ThemeSelector = () => {
-    const [theme, setTheme] = useState("dark")
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    const handleChangeTheme = () => {
-        setTheme(prevTheme => prevTheme === "light" ? "dark" : "light")
-    }
+    const [theme, setTheme] = useState(() => {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark') return true;
+        if (saved === 'light') return false;
+        return prefersDark;
+    })
     
     useEffect(() => {
-        if(theme === "dark") {
-            document.querySelector('html')?.classList.add('dark')
+        const root = window.document.documentElement;
+        if(theme) {
+            root.classList.add('dark')
+            localStorage.setItem('theme', 'dark');
         } else {
-            document.querySelector('html')?.classList.remove('dark')
+            root.classList.remove('dark')
+            localStorage.setItem('theme', 'light');
         }
-        console.log(theme)
     }, [theme])
 
     return (
@@ -21,9 +26,9 @@ const ThemeSelector = () => {
             <img src="/assets/images/logo.svg" alt="logo" className='text-white m-4' />
             <button 
                 className='p-2 m-4 rounded-xl hover:bg-slate-700 dark:bg-slate-600 bg-[#c7d0dc] transition-all ease-in-out duration-150'
-                onClick={() => handleChangeTheme()}>
+                onClick={() => setTheme(!theme)}>
                     {
-                        theme === "dark"
+                        theme
                         ?
                             <img src="/assets/images/icon-sun.svg" alt="light theme" className='text-black' width={30}/>
                         :
