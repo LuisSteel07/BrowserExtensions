@@ -1,5 +1,1 @@
-export enum Mode {
-    ALL = 'all',
-    ACTIVE = 'active',
-    INACTIVE = 'inactive'
-}
+export type Mode = 'all' | 'active' | 'inactive';

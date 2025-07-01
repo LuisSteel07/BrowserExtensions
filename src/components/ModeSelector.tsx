@@ -1,5 +1,4 @@
-import { useState } from "react"
-import { Mode } from "../interfaces/Mode"
+import type { Mode } from "../interfaces/Mode"
 
 interface ModeSelector {
     text: string,
