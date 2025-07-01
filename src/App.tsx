@@ -5,11 +5,12 @@ import Extension from './components/Extension'
 import type { Mode } from './interfaces/Mode'
 import ModeSelector from './components/ModeSelector'
 
-const App = () => {
-    const ExtensionsList: Array<ExtensionProps> = JSON.parse(JSON.stringify(data, null, 4))
 
+const App = () => {
+    
     const [mode, setMode] = useState<Mode>('all')
-    const [extensions, setExtensions] = useState<Array<ExtensionProps>>(ExtensionsList)
+    const [ExtensionGlobal, setExtencionGlobal]= useState<Array<ExtensionProps>>(JSON.parse(JSON.stringify(data, null, 4)))
+    const [extensions, setExtensions] = useState<Array<ExtensionProps>>(ExtensionGlobal)
 
     const [allMode, setAllMode] = useState(true);
     const [activeMode, setActiveMode] = useState(false);
@@ -31,17 +32,30 @@ const App = () => {
         }
     }
 
+    const handle_remove = (name: string) => {
+        const new_list: Array<ExtensionProps> = []
+
+        extensions.map(e => {if(e.name !== name) new_list.push(e)})
+
+        setExtencionGlobal(new_list)
+        setExtensions(new_list)
+    }
+
+    const handle_active = (name: string) => {
+        extensions.map(e => {if(e.name === name) e.isActive = !e.isActive})
+    }
+
     useEffect(() => {
         let filter_extensions: Array<ExtensionProps> = [] 
 
         if(mode === 'all') {
-            filter_extensions = ExtensionsList
+            filter_extensions = ExtensionGlobal
         } else if (mode === 'active') {
-            ExtensionsList.map(e => {
+            ExtensionGlobal.map(e => {
                 if(e.isActive) filter_extensions.push(e)
             }) 
         } else if (mode === 'inactive') {
-            ExtensionsList.map(e => {
+            ExtensionGlobal.map(e => {
                 if(!e.isActive) filter_extensions.push(e)
             })
         }
@@ -70,6 +84,8 @@ const App = () => {
                                     description={e.description}
                                     logo={e.logo}
                                     isActive={e.isActive}
+                                    handle_delete={handle_remove}
+                                    handle_active={handle_active}
                                     key={e.name}
                                 />
                             )
