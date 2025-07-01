@@ -25,7 +25,7 @@ const Extension:React.FC<ExtensionProps> = ({name, description, isActive, logo}:
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 ${
                         Active ? 'bg-[#f25c54]' : 'bg-slate-700'
                     }`}
-                    onClick={e => setIsActive(!Active)}
+                    onClick={() => setIsActive(!Active)}
                     >
                     <span
                         className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
