@@ -11,21 +11,42 @@ const App = () => {
     const [mode, setMode] = useState<Mode>('all')
     const [extensions, setExtensions] = useState<Array<ExtensionProps>>(ExtensionsList)
 
+    const [allMode, setAllMode] = useState(true);
+    const [activeMode, setActiveMode] = useState(false);
+    const [inactiveMode, setInactiveMode] = useState(false);
+
+    const handle_selection_mode = (mode:Mode) => {
+        if(mode === 'all'){
+            setAllMode(true)
+            setActiveMode(false)
+            setInactiveMode(false)
+        } else if (mode === 'active'){
+            setAllMode(false)
+            setActiveMode(true)
+            setInactiveMode(false)
+        } else if (mode === 'inactive'){
+            setAllMode(false)
+            setActiveMode(false)
+            setInactiveMode(true)
+        }
+    }
+
     useEffect(() => {
         let filter_extensions: Array<ExtensionProps> = [] 
 
-        if(mode == 'all') {
+        if(mode === 'all') {
             filter_extensions = ExtensionsList
-        } else if (mode == 'active') {
+        } else if (mode === 'active') {
             ExtensionsList.map(e => {
                 if(e.isActive) filter_extensions.push(e)
             }) 
-        } else if (mode == 'inactive') {
+        } else if (mode === 'inactive') {
             ExtensionsList.map(e => {
                 if(!e.isActive) filter_extensions.push(e)
             })
         }
 
+        handle_selection_mode(mode)
         setExtensions(filter_extensions)
     }, [mode])
 
@@ -34,9 +55,9 @@ const App = () => {
             <div className='flex md:flex-row flex-col md:items-baseline items-center gap-4 justify-around w-full'>
                 <h1 className='md:text-4xl text-2xl font-bold dark:text-white text-black'>Extensions List</h1>
                 <div className='flex gap-4 text-white'>
-                    <ModeSelector text='All' mode={'all'} setMode={setMode}/>
-                    <ModeSelector text='Active' mode={'active'} setMode={setMode}/>
-                    <ModeSelector text='Inactive' mode={'inactive'} setMode={setMode}/>
+                    <ModeSelector text='All' mode={'all'} isSelected={allMode} setMode={setMode}/>
+                    <ModeSelector text='Active' mode={'active'} isSelected={activeMode} setMode={setMode}/>
+                    <ModeSelector text='Inactive' mode={'inactive'} isSelected={inactiveMode} setMode={setMode}/>
                 </div>
             </div>
 
