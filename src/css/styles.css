@@ -1,0 +1,10 @@
+@font-face {
+    font-family: NonoSans;
+    src: url('../assets/fonts/NotoSans-VariableFont_wdth\,wght.ttf');
+}
+
+* {
+    font-family: NonoSans, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, Helvetica, sans-serif;
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
